@@ -1,0 +1,58 @@
+import numpy as np
+
+moves_powers = {'ember': 4, 'scratch': 3, 'tackle': 1, 'Flamethrower': 10, 'Slash': 8, 'Fly': 7, 'Flamewheel': 8, 'Lightning': 12, 'Thunderbolt': 9}
+Pikachu_moves = ['ember', 'tackle']
+Rattata_moves = ['scratch', 'tackle']
+Charizard_moves = ['Flamethrower', 'Slash', 'Fly', 'Flamewheel']
+Zapdos_moves = ['Lightning', 'Fly', 'Thunderbolt', 'Slash']
+#dic_of_pokemon_moves = {'Pikachu': {'ember': 2, 'tackle': 1}, 'Rattata':{'tackle': 1, 'scratch': 1}, 'Charizard': {'Flamethrower': 1, 'Slash': 1, 'Fly': 1, 'Flamewheel':1}, 'Zapdos':{'Lightning':1, 'Fly':1, 'Thunderbolt':1,'Slash':1}}
+dic_of_pokemon_moves = {'Pikachu': {'ember', 'tackle'}, 'Rattata': {'tackle', 'scratch'}, 'Charizard': {'Flamethrower', 'Slash', 'Fly', 'Flamewheel'}, 'Zapdos': {'Lightning', 'Fly', 'Thunderbolt', 'Slash'}}
+
+
+
+class Pokemon:
+    def __init__(self, name, type, level, health, attack, defense):
+        self.name = name
+        self.type = type
+        self.level = level
+        self.health = health
+        self.attack = attack
+        self.defense = defense
+        self.attack_increase = self.attack/self.level * 3
+        self.defence_increase = self.defense/self.level * 3
+        self.moves = dic_of_pokemon_moves[self.name]
+        #I need to get rid of the values in this dictionary and just have the names
+        #self.move_power = moves_powers[self.move] + (0.5 * self.attack)
+
+
+if __name__ == '__main__':
+    Rattata = Pokemon('Rattata', 'normal', 5, 10, 4, 2)
+    Pikachu = Pokemon('Pikachu', 'electric', 7, 10, 6, 4)
+    Charizard = Pokemon('Charizard', 'fire', 60, 40, 40, 38)
+    Zapdos = Pokemon('Zapdos', 'lightning', 57, 38, 43, 35)
+
+
+def Battle(player1, player2):
+    print('Poke Battle! {player1.name} has decided to battle {player2.name}'.format(player1=player1,player2=player2))
+    player1health = player1.health
+    player2health = player2.health
+    while player1health > 0 and player2health > 0:
+        print(player1.moves)
+        move1 = input(" It is {player1.name}'s turn to attack. Choose {player1.name}'s attack!".format(player1=player1))
+        move_power1 = moves_powers[move1]
+        player2health -= (move_power1 + player1.attack_increase - player1.defence_increase)
+        if player2health <= 0:
+            print("\n..." + player2.name + "fainted.")
+            break
+        #else:
+            #print("Ahhhhhh, its ok {player2.name}, let's take the fight to them.".format(player2=player2)
+        print(player2.moves)
+        move2 = input("It's {player2.name}'s turn to attack. Choose {player2.name}'s attack!".format(player2=player2))
+        move_power2 = moves_powers[move2]
+        player1health -= (move_power2 + player2.attack_increase - player2.defence_increase)
+        if player1health <= 0:
+            print("\n..." + player1.name + "fainted. Ash keeps on walking.")
+            break
+
+
+Battle(Pikachu,Rattata)
